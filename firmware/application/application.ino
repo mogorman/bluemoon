@@ -105,6 +105,7 @@ int led = 2;
 // pin 5 on the RGB shield is button 1
 // (button press will be shown on the iPhone app)
 int button = 3;
+int motor = 4;
 
 // debounce time (in ms)
 int debounce_time = 10;
@@ -118,12 +119,14 @@ void setup() {
 
   // button press will be shown on the iPhone app)
   pinMode(button, INPUT);
+  pinMode(motor, OUTPUT);
+  
   Serial.begin(9600);
   // this is the data we want to appear in the advertisement
   // (if the deviceName and advertisementData are too long to fix into the 31 byte
   // ble advertisement packet, then the advertisementData is truncated first down to
   // a single byte, then it will truncate the deviceName)
-  RFduinoBLE.advertisementData = "csesame";
+  RFduinoBLE.advertisementData = "bluemoon";
   
   // start the BLE stack
   RFduinoBLE.begin();
@@ -198,11 +201,20 @@ void RFduinoBLE_onReceive(char *data, int len)
       break;
     case 2:
       RFduinoBLE.send('l');
+      digitalWrite(motor, HIGH);
+      delay(700);
+      digitalWrite(motor, LOW);
+      delay(300);
+      digitalWrite(motor, HIGH);
+      delay(700);
+      digitalWrite(motor, LOW);
       delay(100);
       send_message(lock);
+      
       break;
     case 3:
       RFduinoBLE.send('u');
+      digitalWrite(motor, LOW);
       delay(100);
       send_message(unlock);
       break;
