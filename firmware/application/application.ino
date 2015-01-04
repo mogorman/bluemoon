@@ -202,11 +202,11 @@ void RFduinoBLE_onReceive(char *data, int len)
     case 2:
       RFduinoBLE.send('l');
       digitalWrite(motor, HIGH);
-      delay(700);
+      delay(800);
       digitalWrite(motor, LOW);
       delay(300);
       digitalWrite(motor, HIGH);
-      delay(700);
+      delay(800);
       digitalWrite(motor, LOW);
       delay(100);
       send_message(lock);
