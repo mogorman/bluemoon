@@ -13,10 +13,12 @@ all: check_submodule compile_app
 check_submodule:
 	@echo ""
 compile_app:
+	@mkdir -p bin
 ifeq ("$(wildcard ./bin/application.hex )", "")
 	@rm -f ./build/app.md5
 endif
 	@md5sum application/application.ino | cmp -s build/app.md5 -; \
+	mkdir -p build; \
 	 if test $$? -ne 0; then \
 	  xvfb-run -a $(ARDUINO) \
 	   --verbose-build \
@@ -33,10 +35,12 @@ endif
 	fi
 
 compile_test:
+	@mkdir  -p bin
 ifeq ("$(wildcard ./bin/test.hex )", "")
 	@rm -f ./build/test.md5
 endif
 	@md5sum test/test.ino | cmp -s build/test.md5 -; \
+	mkdir build; \
 	 if test $$? -ne 0; then \
 	  xvfb-run -a $(ARDUINO) \
 	   --verbose-build \
@@ -59,5 +63,5 @@ test: compile_test
 	$(AVRDUDE) -patmega32u4 -cavr109 -P$(ARDUINO_PORT) -b57600 -D -Uflash:w:./bin/test.hex:s 
 
 clean:
-	rm -rf build/*
-	rm -rf bin/*
+	rm -rf build
+	rm -f bin/application.hex bin/test.hex
